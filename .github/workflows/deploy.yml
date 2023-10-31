@@ -6,7 +6,8 @@ on:
       - main
     types:
       - closed
-
+# Deploy dev
+# 2
 jobs:
   deploy:
     if: github.event.pull_request.merged == true
@@ -16,16 +17,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install production dependencies
-        run: npm install --production
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
+      - name: Install production dependencies
+        run: npm install --production
+
       - name: Deploy to AWS using Serverless
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: serverless deploy
+        run: npx sls deploy
