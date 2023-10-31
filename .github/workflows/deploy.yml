@@ -19,7 +19,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm i -g serverless
-      - run: npm install
+      - run: npm run build
+      - run: npm install --production
 
       - name: Deploy
         run: serverless deploy
