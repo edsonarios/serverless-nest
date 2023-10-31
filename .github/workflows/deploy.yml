@@ -5,7 +5,7 @@ on:
     types:
       - closed
     branches:
-      - dev
+      - develop
       - release
       - staging
       - main
@@ -19,13 +19,14 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+    if: (github.event_name == 'pull_request' && github.event.pull_request.merged == true) || github.event_name == 'workflow_dispatch'
     strategy:
       matrix:
         node-version: [18.x]
 
     steps:
       - name: Check branch name for manual dispatch
+        if: github.event_name == 'workflow_dispatch' && !startsWith(github.ref, 'refs/heads/feature/')
         run: |
           echo "Error: Despliegues manuales sólo están permitidos desde ramas feature/*"
           exit 1
