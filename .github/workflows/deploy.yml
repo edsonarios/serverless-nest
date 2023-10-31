@@ -1,19 +1,41 @@
-name: Deploy to AWS
+name: Deploy AWS Serverless API Medy
 
 on:
-  push:
+  pull_request:
+    types:
+      - closed
     branches:
-      - dev
+      - develop
+      - release
+      - staging
+      - main
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Razón del despliegue'
+        required: true
+        default: 'Despliegue manual solo rama feature/..'
 
 jobs:
   deploy:
-    name: dev-deploy
     runs-on: ubuntu-latest
+    if: (github.event_name == 'pull_request' && github.event.pull_request.merged == true) || github.event_name == 'workflow_dispatch'
     strategy:
       matrix:
         node-version: [18.x]
-
+    
+    env:
+      AWS_ACCESS_KEY_ID: ${{ (github.event.pull_request.base.ref == 'develop') && secrets.AWS_ACCESS_KEY_ID_DEV || (github.event.pull_request.base.ref == 'staging') && secrets.AWS_ACCESS_KEY_ID_STAGING || secrets.AWS_ACCESS_KEY_ID_PROD }}
+      AWS_SECRET_ACCESS_KEY: ${{ (github.event.pull_request.base.ref == 'develop') && secrets.AWS_SECRET_ACCESS_KEY_DEV || (github.event.pull_request.base.ref == 'staging') && secrets.AWS_SECRET_ACCESS_KEY_STAGING || secrets.AWS_SECRET_ACCESS_KEY_PROD }}
+      DEPLOY_PREFIX: ${{ (github.event.pull_request.base.ref == 'develop') && 'dev' || (github.event.pull_request.base.ref == 'staging') && 'staging' || 'prod' }}
+    
     steps:
+      - name: Check branch name for manual dispatch
+        if: github.event_name == 'workflow_dispatch' && !startsWith(github.ref, 'refs/heads/feature/')
+        run: |
+          echo "Error: Despliegues manuales sólo están permitidos desde ramas feature/*"
+          exit 1
+
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
@@ -22,10 +44,7 @@ jobs:
       - run: npm ci
       - run: npm run build --if-present
 
-      - name: Deploy
-        uses: serverless/github-action@v3
+      - name: serverless deploy
+        uses: serverless/github-action@v3.2
         with:
-          args: deploy
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          args: deploy --stage $DEPLOY_PREFIX
