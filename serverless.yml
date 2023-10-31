@@ -48,9 +48,6 @@ custom:
     noPrependStageInUrl: false
   optimize:
     external: ['swagger-ui-dist']
-  webpack:
-    webpackConfig: 'webpack.config.js'
-    includeModules: true
 
 resources:
   Resources:
