@@ -3,6 +3,7 @@ frameworkVersion: '3'
 
 plugins:
   - serverless-plugin-optimize
+  - serverless-webpack
   # Uncomment for local environment and install devDependencies
   # - serverless-offline
 
@@ -48,6 +49,9 @@ custom:
     noPrependStageInUrl: false
   optimize:
     external: ['swagger-ui-dist']
+  webpack:
+    webpackConfig: 'webpack.config.js'
+    includeModules: true
 
 resources:
   Resources:
