@@ -4,7 +4,7 @@ frameworkVersion: '3'
 plugins:
   - serverless-plugin-optimize
   # Uncomment for local environment and install devDependencies
-  - serverless-offline
+  # - serverless-offline
 
 provider:
   name: aws
