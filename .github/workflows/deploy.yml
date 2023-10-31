@@ -22,7 +22,7 @@ jobs:
           node-version: 18
 
       - name: Install serverless
-        run: yarn install -g serverless
+        run: yarn global add serverless
       
       - name: Install dependencies
         run: yarn install --production
