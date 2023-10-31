@@ -3,9 +3,9 @@ frameworkVersion: '3'
 
 plugins:
   - serverless-plugin-optimize
-  - serverless-http
+  - @vendia/serverless-express
   # Uncomment for local environment and install devDependencies
-  # - serverless-offline
+  - serverless-offline
 
 provider:
   name: aws
