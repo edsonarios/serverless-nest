@@ -7,6 +7,7 @@ on:
 
 jobs:
   deploy:
+    name: dev-deploy
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -19,7 +20,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install -g serverless
-      - run: npm install --production
+      - run: npm install
 
       - name: Deploy
         run: serverless deploy
