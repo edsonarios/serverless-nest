@@ -20,6 +20,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install -g serverless
+      - run: serverless plugin install -n serverless-plugin-optimize
       # - run: npm install
 
       - name: Deploy
