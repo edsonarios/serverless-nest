@@ -48,6 +48,8 @@ custom:
     noPrependStageInUrl: false
   optimize:
     external: ['swagger-ui-dist']
+    exclude: ['aws-sdk']
+    debug: true
 
 resources:
   Resources:
