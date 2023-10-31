@@ -27,6 +27,9 @@ jobs:
       - name: Install dependencies
         run: yarn install --production
 
+      - name: Serverles plugin
+        run: npx serverless plugin install --name serverless-http
+
       - name: Deploy using Serverless
         run: npx serverless deploy --verbose
         env:
