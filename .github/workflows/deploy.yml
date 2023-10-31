@@ -1,16 +1,12 @@
 name: Deploy to AWS
 
 on:
-  pull_request:
+  push:
     branches:
-      - main
-    types:
-      - closed
-# Deploy dev
-# 2
+      - dev
+
 jobs:
   deploy:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -25,12 +21,9 @@ jobs:
       - name: Install production dependencies
         run: npm install --production
 
-      - name: Install production dependencies
-        run: npm run build
-
       - name: Deploy to AWS using Serverless
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: npx sls deploy
+        run: npx sls deploy --verbose
 #4
