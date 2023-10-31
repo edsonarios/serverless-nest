@@ -3,6 +3,7 @@ frameworkVersion: '3'
 
 plugins:
   - serverless-plugin-optimize
+  - serverless-http
   # Uncomment for local environment and install devDependencies
   # - serverless-offline
 

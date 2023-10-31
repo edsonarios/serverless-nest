@@ -1,4 +1,5 @@
-import serverlessExpress from '@vendia/serverless-express'
+// import serverlessExpress from '@vendia/serverless-express'
+import serverlessExpress from 'serverless-http'
 import { Callback, Context, Handler } from 'aws-lambda'
 import { createApp } from './main'
 
@@ -12,7 +13,7 @@ async function bootstrap(event?: any): Promise<Handler> {
   const nestApp = await createApp(Host, stage)
   await nestApp.init()
   const expressApp = nestApp.getHttpAdapter().getInstance()
-  return serverlessExpress({ app: expressApp })
+  return serverlessExpress(expressApp)
 }
 
 export const handler: Handler = async (
