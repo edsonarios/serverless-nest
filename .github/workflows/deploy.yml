@@ -15,17 +15,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
         with:
-          version: 8
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      
-      - run: pnpm i --production
-      - run: pnpm i -g serverless
-      
-      - run: sls config credentials --provider aws --key ${{ secrets.AWS_ACCESS_KEY_ID }} --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - run: sls deploy --verbose
-        
+          node-version: ${{ matrix.node-version }}
+      - run: npm install -g serverless
+      - run: npm install --production
+
+      - name: Deploy
+        run: serverless deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
