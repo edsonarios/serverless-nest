@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - dev
-    paths:
-      - apps/**
-      - lib/**
-      - .github/workflows/**
 
 jobs:
   deploy:
