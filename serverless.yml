@@ -1,0 +1,58 @@
+service: serverless-nestjs-example
+frameworkVersion: '3'
+
+plugins:
+  - serverless-plugin-optimize
+  # Uncomment for local environment and install devDependencies
+  # - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-west-2
+  stage: ${opt:stage, 'dev'}
+  timeout: 10
+  memorySize: 256
+  tracing:
+    lambda: true
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'logs:CreateLogGroup'
+        - 'logs:CreateLogStream'
+        - 'logs:PutLogEvents'
+      Resource: 'arn:aws:logs:*:*:*'
+  apiGateway:
+    restApiId:
+      Ref: MyApiGateway
+    restApiRootResourceId:
+      Fn::GetAtt:
+        - MyApiGateway
+        - RootResourceId
+
+functions:
+  main:
+    name: lmb-${self:provider.stage}-cs-api_medy-01
+    handler: dist/serverless.handler
+    timeout: 10
+    events:
+      - http:
+          path: '/'
+          method: ANY
+      - http:
+          method: ANY
+          path: '/{proxy+}'
+
+custom:
+  serverless-offline:
+    noPrependStageInUrl: false
+  optimize:
+    external: ['swagger-ui-dist']
+
+resources:
+  Resources:
+    MyApiGateway:
+      Type: AWS::ApiGateway::RestApi
+      Properties:
+        Name: apigw-${self:provider.stage}-cs-apigateway-medy-01
+        Description: CS Medy API
