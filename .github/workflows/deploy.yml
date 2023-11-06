@@ -25,9 +25,9 @@ jobs:
         node-version: [18.x]
     
     env:
-      AWS_ACCESS_KEY_ID: ${{ (github.event.pull_request.base.ref == 'develop') && secrets.AWS_ACCESS_KEY_ID_DEV || (github.event.pull_request.base.ref == 'staging') && secrets.AWS_ACCESS_KEY_ID_STAGING || secrets.AWS_ACCESS_KEY_ID_PROD }}
-      AWS_SECRET_ACCESS_KEY: ${{ (github.event.pull_request.base.ref == 'develop') && secrets.AWS_SECRET_ACCESS_KEY_DEV || (github.event.pull_request.base.ref == 'staging') && secrets.AWS_SECRET_ACCESS_KEY_STAGING || secrets.AWS_SECRET_ACCESS_KEY_PROD }}
-      DEPLOY_PREFIX: ${{ (github.event.pull_request.base.ref == 'develop') && 'dev' || (github.event.pull_request.base.ref == 'staging') && 'staging' || 'prod' }}
+      AWS_ACCESS_KEY_ID: ${{ (github.event.pull_request.base.ref == 'main') && secrets.AWS_ACCESS_KEY_ID_PROD || (github.event.pull_request.base.ref == 'staging') && secrets.AWS_ACCESS_KEY_ID_STAGING || secrets.AWS_ACCESS_KEY_ID_DEV }}
+      AWS_SECRET_ACCESS_KEY: ${{ (github.event.pull_request.base.ref == 'main') && secrets.AWS_SECRET_ACCESS_KEY_PROD || (github.event.pull_request.base.ref == 'staging') && secrets.AWS_SECRET_ACCESS_KEY_STAGING || secrets.AWS_SECRET_ACCESS_KEY_DEV }}
+      DEPLOY_PREFIX: ${{ (github.event.pull_request.base.ref == 'main') && 'prod' || (github.event.pull_request.base.ref == 'staging') && 'staging' || 'dev' }}
     
     steps:
       - name: Check branch name for manual dispatch
