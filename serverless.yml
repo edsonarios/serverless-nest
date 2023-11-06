@@ -35,7 +35,6 @@ functions:
   main:
     name: lmb-${self:provider.stage}-cs-api_medy-01
     handler: dist/serverless.handler
-    timeout: 10
     events:
       - http:
           path: '/'
