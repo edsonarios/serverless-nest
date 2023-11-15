@@ -25,12 +25,12 @@ provider:
         - 'logs:PutLogEvents'
       Resource: 'arn:aws:logs:*:*:*'
   apiGateway:
-    restApiId:
-      Ref: MyApiGateway
-    restApiRootResourceId:
-      Fn::GetAtt:
-        - MyApiGateway
-        - RootResourceId
+    restApiId: ${cf:MyApiGateway.restApiId}
+      # Ref: MyApiGateway
+    restApiRootResourceId: ${cf:MyApiGateway.rootResourceId}
+      # Fn::GetAtt: 
+      #   - MyApiGateway
+      #   - RootResourceId
 
 functions:
   main:
@@ -55,8 +55,6 @@ custom:
     noPrependStageInUrl: false
   optimize:
     external: ['swagger-ui-dist']
-    exclude: ['aws-sdk']
-    debug: true
   apiGatewayThrottling:
     maxRequestsPerSecond: 1000
     maxConcurrentRequests: 500
