@@ -15,6 +15,9 @@ on:
         description: 'Razón del despliegue'
         required: true
         default: 'Despliegue manual solo rama feature/..'
+  push:
+    branches:
+    - test
 
 jobs:
   deploy:

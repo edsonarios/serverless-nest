@@ -1,10 +1,19 @@
 service: serverless-nestjs-example
 frameworkVersion: '3'
 
+	
+custom:
+  # Configures throttling settings for the API Gateway stage
+  # They apply to all http endpoints, unless specifically overridden
+  apiGatewayThrottling:
+    maxRequestsPerSecond: 1000
+    maxConcurrentRequests: 500
+    
 plugins:
   - serverless-plugin-optimize
   # Uncomment for local environment and install devDependencies
   # - serverless-offline
+  - serverless-api-gateway-throttling
 
 provider:
   name: aws
@@ -39,9 +48,15 @@ functions:
       - http:
           path: '/'
           method: ANY
+          throttling:
+            maxRequestsPerSecond: 1
+            maxConcurrentRequests: 1
       - http:
           method: ANY
           path: '/{proxy+}'
+          throttling:
+            maxRequestsPerSecond: 1
+            maxConcurrentRequests: 1
 
 custom:
   serverless-offline:
