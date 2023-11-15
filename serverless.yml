@@ -24,13 +24,6 @@ provider:
         - 'logs:CreateLogStream'
         - 'logs:PutLogEvents'
       Resource: 'arn:aws:logs:*:*:*'
-  apiGateway:
-    restApiId: ${cf:MyApiGateway.restApiId}
-      # Ref: MyApiGateway
-    restApiRootResourceId: ${cf:MyApiGateway.rootResourceId}
-      # Fn::GetAtt: 
-      #   - MyApiGateway
-      #   - RootResourceId
 
 functions:
   main:
