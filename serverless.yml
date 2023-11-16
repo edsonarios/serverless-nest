@@ -4,8 +4,7 @@ frameworkVersion: '3'
 plugins:
   - serverless-plugin-optimize
   # Uncomment for local environment and install devDependencies
-  # - serverless-offline
-  - serverless-api-gateway-throttling
+  - serverless-offline
 
 provider:
   name: aws
@@ -31,24 +30,29 @@ provider:
       Fn::GetAtt:
         - MyApiGateway
         - RootResourceId
-  
+
 functions:
   main:
     name: lmb-${self:provider.stage}-cs-api_medy-01
     handler: dist/serverless.handler
     events:
-      - httpApi:
-          path: '/medy/v1/relacional'
-          method: post
-          throttling:
-            maxRequestsPerSecond: 1
-            maxConcurrentRequests: 1
+      - http:
+          path: '/'
+          method: ANY
+      - http:
+          method: ANY
+          path: '/{proxy+}'
 
 custom:
   serverless-offline:
     noPrependStageInUrl: false
   optimize:
     external: ['swagger-ui-dist']
-  apiGatewayThrottling:
-    maxRequestsPerSecond: 1000
-    maxConcurrentRequests: 500
+
+resources:
+  Resources:
+    MyApiGateway:
+      Type: AWS::ApiGateway::RestApi
+      Properties:
+        Name: apigw-${self:provider.stage}-cs-apigateway-medy-01
+        Description: CS Medy API
