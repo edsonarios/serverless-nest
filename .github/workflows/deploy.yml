@@ -59,8 +59,12 @@ jobs:
         with:
           aws-region: us-west-2
 
-      - run: ls
-      - run: ls -la ./scripts/
+      - name: Show Current Working Directory
+        run: pwd
+        
+      - name: List Directory Contents
+        run: ls -la
+        
 
 
 
