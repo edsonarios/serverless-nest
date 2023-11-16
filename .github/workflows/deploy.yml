@@ -58,7 +58,11 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-west-2
-      
+
+      - run: ls
+      - run: ls -la ./scripts/
+
+
 
       - name: Configure API Gateway Rate Limiting
         run: |
