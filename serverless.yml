@@ -31,15 +31,9 @@ functions:
     name: lmb-${self:provider.stage}-cs-api_medy-01
     handler: dist/serverless.handler
     events:
-      - http:
+      - httpApi:
           path: '/medy/v1/relacional'
-          method: POST
-          throttling:
-            maxRequestsPerSecond: 1
-            maxConcurrentRequests: 1
-      - http:
-          method: POST
-          path: '/{proxy+}/medy/v1/relacional'
+          method: post
           throttling:
             maxRequestsPerSecond: 1
             maxConcurrentRequests: 1
