@@ -30,6 +30,7 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ (github.event.pull_request.base.ref == 'main') && secrets.AWS_ACCESS_KEY_ID_PROD || (github.event.pull_request.base.ref == 'staging') && secrets.AWS_ACCESS_KEY_ID_STAGING || secrets.AWS_ACCESS_KEY_ID_DEV }}
       AWS_SECRET_ACCESS_KEY: ${{ (github.event.pull_request.base.ref == 'main') && secrets.AWS_SECRET_ACCESS_KEY_PROD || (github.event.pull_request.base.ref == 'staging') && secrets.AWS_SECRET_ACCESS_KEY_STAGING || secrets.AWS_SECRET_ACCESS_KEY_DEV }}
       DEPLOY_PREFIX: ${{ (github.event.pull_request.base.ref == 'main') && 'prod' || (github.event.pull_request.base.ref == 'staging') && 'staging' || 'dev' }}
+      GATEWAY_NAME: "apigw-${{ env.DEPLOY_PREFIX }}-cs-apigateway-medy-01"
     
     steps:
       - name: Check branch name for manual dispatch
@@ -67,9 +68,12 @@ jobs:
         
       - name: Configure API Gateway Rate Limiting
         run: |
-          API_NAME="apigw-${{ env.DEPLOY_PREFIX }}-cs-apigateway-medy-01"
-          echo "API Name: $API_NAME"
-          API_ID=$(aws apigateway get-rest-apis --query "items[?name==\`${API_NAME}\`].id" --output text)
+          echo "API Name: $GATEWAY_NAME"
+          API_ID=$(aws apigateway get-rest-apis --query "items[?name==\`${GATEWAY_NAME}\`].id" --output text)
           echo "API ID: $API_ID"
-          sh ./scripts/configure-api-gateway.sh $API_ID ${{ env.DEPLOY_PREFIX }} 25 15
-
+          aws apigateway update-stage \
+            --rest-api-id $API_ID \
+            --stage-name ${{ env.DEPLOY_PREFIX }} \
+            --patch-operations \
+              op='replace',path='/*/*/throttling/burstLimit',value='40' \
+              op='replace',path='/*/*/throttling/rateLimit',value='20'
