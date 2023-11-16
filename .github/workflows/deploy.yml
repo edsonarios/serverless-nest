@@ -59,8 +59,9 @@ jobs:
 
       - name: Configure API Gateway Rate Limiting
         run: |
-          API_ID=$(aws apigateway get-rest-apis --query 'items[?name==`NombreDeTuAPI`].id' --output text)
-          sh ./github/workflows/configure-api-gateway.sh $API_ID $DEPLOY_PREFIX 20 10
+          API_NAME="apigw-${{ env.DEPLOY_PREFIX }}-cs-apigateway-medy-01"
+          API_ID=$(aws apigateway get-rest-apis --query "items[?name==\`${API_NAME}\`].id" --output text)
+          sh ./scripts/configure-api-gateway.sh $API_ID ${{ env.DEPLOY_PREFIX }} 10 5
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
