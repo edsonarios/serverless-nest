@@ -32,14 +32,14 @@ functions:
     handler: dist/serverless.handler
     events:
       - http:
-          path: '/'
+          path: '/medy/relacional'
           method: POST
           throttling:
             maxRequestsPerSecond: 1
             maxConcurrentRequests: 1
       - http:
           method: POST
-          path: '/{proxy+}'
+          path: '/{proxy+}/medy/relacional'
           throttling:
             maxRequestsPerSecond: 1
             maxConcurrentRequests: 1
