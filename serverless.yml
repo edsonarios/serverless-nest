@@ -24,7 +24,13 @@ provider:
         - 'logs:CreateLogStream'
         - 'logs:PutLogEvents'
       Resource: 'arn:aws:logs:*:*:*'
-
+  apiGateway:
+    restApiId:
+      Ref: MyApiGateway
+    restApiRootResourceId:
+      Fn::GetAtt:
+        - MyApiGateway
+        - RootResourceId
   
 functions:
   main:
@@ -46,3 +52,11 @@ custom:
   apiGatewayThrottling:
     maxRequestsPerSecond: 1000
     maxConcurrentRequests: 500
+
+resources:
+  Resources:
+    MyApiGateway:
+      Type: AWS::ApiGateway::RestApi
+      Properties:
+        Name: apigw-${self:provider.stage}-cs-apigateway-medy-01
+        Description: CS Medy API
