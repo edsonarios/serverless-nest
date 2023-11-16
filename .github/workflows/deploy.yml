@@ -30,7 +30,7 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ (github.event.pull_request.base.ref == 'main') && secrets.AWS_ACCESS_KEY_ID_PROD || (github.event.pull_request.base.ref == 'staging') && secrets.AWS_ACCESS_KEY_ID_STAGING || secrets.AWS_ACCESS_KEY_ID_DEV }}
       AWS_SECRET_ACCESS_KEY: ${{ (github.event.pull_request.base.ref == 'main') && secrets.AWS_SECRET_ACCESS_KEY_PROD || (github.event.pull_request.base.ref == 'staging') && secrets.AWS_SECRET_ACCESS_KEY_STAGING || secrets.AWS_SECRET_ACCESS_KEY_DEV }}
       DEPLOY_PREFIX: ${{ (github.event.pull_request.base.ref == 'main') && 'prod' || (github.event.pull_request.base.ref == 'staging') && 'staging' || 'dev' }}
-      GATEWAY_NAME: "apigw-${{ env.DEPLOY_PREFIX }}-cs-apigateway-medy-01"
+      GATEWAY_NAME: "apigw-${{ (github.event.pull_request.base.ref == 'main') && 'prod' || (github.event.pull_request.base.ref == 'staging') && 'staging' || 'dev' }}-cs-apigateway-medy-01"
     
     steps:
       - name: Check branch name for manual dispatch
