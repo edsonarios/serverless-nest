@@ -49,11 +49,6 @@ jobs:
       - name: Prepare Serverless Deploy Command
         run: echo "SLS_RESET=reset-all-endpoint-settings" >> $GITHUB_ENV
 
-      - name: serverless reset
-        uses: serverless/github-action@v3.2
-        with:
-          args: ${{ env.SLS_RESET }}
-
       - name: Prepare Serverless Deploy Command
         run: echo "SLS_DEPLOY_COMMAND=deploy --stage $DEPLOY_PREFIX --verbose" >> $GITHUB_ENV
 
