@@ -7,15 +7,16 @@ import rateLimit from 'express-rate-limit'
   controllers: [],
   providers: [],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(
-        rateLimit({
-          windowMs: 15 * 60 * 1000, // 15 minutos
-          max: 6, // Límite de 100 solicitudes por ventana de tiempo
-        }),
-      )
-      .forRoutes('*') // Aplica a todas las rutas
-  }
-}
+export class AppModule {}
+// export class AppModule implements NestModule {
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer
+//       .apply(
+//         rateLimit({
+//           windowMs: 2 * 60 * 1000, // 15 minutos
+//           max: 6, // Límite de 100 solicitudes por ventana de tiempo
+//         }),
+//       )
+//       .forRoutes('*') // Aplica a todas las rutas
+//   }
+// }
