@@ -66,5 +66,5 @@ jobs:
           echo "API Name: $API_NAME"
           API_ID=$(aws apigateway get-rest-apis --query "items[?name==\`${API_NAME}\`].id" --output text)
           echo "API ID: $API_ID"
-          sh scripts/configure-api-gateway.sh $API_ID ${{ env.DEPLOY_PREFIX }} 25 15
+          sh ./scripts/configure-api-gateway.sh $API_ID ${{ env.DEPLOY_PREFIX }} 25 15
 
