@@ -60,12 +60,6 @@ jobs:
         with:
           aws-region: us-west-2
 
-      - name: Show Current Working Directory
-        run: pwd
-        
-      - name: List Directory Contents
-        run: ls -la
-        
       - name: Configure API Gateway Rate Limiting
         run: |
           echo "API Name: $GATEWAY_NAME"
